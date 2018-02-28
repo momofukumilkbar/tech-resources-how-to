@@ -15,3 +15,7 @@ const NoteContainer = ({ notes, onClick }) =>
   </div>
 
 export default NoteContainer
+
+NoteContainer.defaultProps = {
+  notes: []
+}

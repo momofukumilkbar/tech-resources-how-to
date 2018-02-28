@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import './App.css'
 import VideoContainer from './VideoContainer/VideoContainer.js'
-import { HOW_TO_START_A_MEETING, HOW_TO_JOIN_A_MEETING } from '../constants/videoConstants'
+import {
+  HOW_TO_START_A_MEETING,
+  HOW_TO_JOIN_A_MEETING,
+  HOW_TO_CALL_IN_TO_A_MEETING,
+  HOW_TO_START_IN_CONFERENCE_ROOM
+} from '../constants/videoConstants'
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +28,7 @@ class App extends Component {
         <header className='App-header'>
           <h1>Hangouts Meet How To</h1>
           <div className='tab-container'>
-            <h2
+            <h3
               className={
                 this.state.selected === HOW_TO_START_A_MEETING
                 ? 'tab selected'
@@ -32,9 +37,9 @@ class App extends Component {
               id={HOW_TO_START_A_MEETING}
               onClick={e => this.handleChangeVideo(e)}
             >
-              Starting a Meeting in Calendar
-            </h2>
-            <h2
+              Scheduling a Meeting in Calendar
+            </h3>
+            <h3
               className={
                 this.state.selected === HOW_TO_JOIN_A_MEETING
                 ? 'tab selected'
@@ -44,7 +49,29 @@ class App extends Component {
               onClick={e => this.handleChangeVideo(e)}
             >
               Joining a meeting in Calendar
-            </h2>
+            </h3>
+            <h3
+              className={
+                this.state.selected === HOW_TO_CALL_IN_TO_A_MEETING
+                ? 'tab selected'
+                : 'tab unselected'
+              }
+              id={HOW_TO_CALL_IN_TO_A_MEETING}
+              onClick={e => this.handleChangeVideo(e)}
+            >
+              Calling into a meeting
+            </h3>
+            <h3
+              className={
+                this.state.selected === HOW_TO_START_IN_CONFERENCE_ROOM
+                ? 'tab selected'
+                : 'tab unselected'
+              }
+              id={HOW_TO_START_IN_CONFERENCE_ROOM}
+              onClick={e => this.handleChangeVideo(e)}
+            >
+              Starting a meeting in the conference room
+            </h3>
           </div>
         </header>
         <VideoContainer video={this.state.selected}/>

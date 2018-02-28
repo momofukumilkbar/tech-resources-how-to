@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
 import HowToStartVideo from '../../assets/how-to-start.mov'
 import HowToJoinVideo from '../../assets/how-to-join.mov'
-
+import HowToCallInVideo from '../../assets/how-to-call-in.mov'
+import HowToStartAMeetingVideo from '../../assets/how-to-start-a-meeting.mov'
 import './VideoContainer.css'
 import NoteContainer from './NoteContainer/NoteContainer'
 import { getMeetingNotes } from '../../constants/noteConstants'
-import { HOW_TO_START_A_MEETING, HOW_TO_JOIN_A_MEETING } from '../../constants/videoConstants'
+import {
+  HOW_TO_START_A_MEETING,
+  HOW_TO_JOIN_A_MEETING,
+  HOW_TO_CALL_IN_TO_A_MEETING,
+  HOW_TO_START_IN_CONFERENCE_ROOM
+} from '../../constants/videoConstants'
 
 export default class VideoContainer extends Component {
   constructor(props) {
@@ -31,7 +37,6 @@ export default class VideoContainer extends Component {
 
   resetStateOnPropsChange(video) {
     this.video.removeEventListener('timeupdate', this.updateTime.bind(this))
-
     this.setUpNotes(video)
   }
 
@@ -43,7 +48,6 @@ export default class VideoContainer extends Component {
       cleanedVideo = this.props.video.toUpperCase().replace(/-/gi, '_')
     }
     const noteConstant = `${cleanedVideo}_A_MEETING_NOTES`
-
     const notes = getMeetingNotes(noteConstant)
     this.setNotes(notes)
   }
@@ -66,12 +70,12 @@ export default class VideoContainer extends Component {
   }
 
   resetState() {
-    if (!this.video.paused) {
-      this.video.pause()
-    }
-    this.video.removeEventListener('timeupdate', this.handleTimeChange.bind(this))
+    const { notes } = this.state
 
-    this.setUpNotes()
+    this.setState({
+      ...this.state,
+      notes: notes.map(note => ({...note, selected: false}))
+    })
   }
 
   handleTimeChange() {
@@ -81,6 +85,14 @@ export default class VideoContainer extends Component {
   updateTime() {
     const { notes } = this.state
     const { currentTime, paused } = this.video
+
+    const lastNoteTime = notes.slice()
+      .sort((a, b) => b.startPoint - a.startPoint)[0].startPoint
+
+    if (currentTime >= lastNoteTime + 1) {
+      this.video.currentTime = 0
+      return this.resetState()
+    }
 
     if (!paused) {
       const newNotes = notes.map((note, index) => {
@@ -119,7 +131,9 @@ export default class VideoContainer extends Component {
   render() {
     const videos = {
       [HOW_TO_START_A_MEETING]: HowToStartVideo,
-      [HOW_TO_JOIN_A_MEETING]: HowToJoinVideo
+      [HOW_TO_JOIN_A_MEETING]: HowToJoinVideo,
+      [HOW_TO_CALL_IN_TO_A_MEETING]: HowToCallInVideo,
+      [HOW_TO_START_IN_CONFERENCE_ROOM]: HowToStartAMeetingVideo
     }
 
     return (
@@ -132,6 +146,7 @@ export default class VideoContainer extends Component {
             className='video'
             preload='auto'
             ref={video => this.video = video}
+            muted
           />
         </div>
       </div>
