@@ -36,24 +36,19 @@ export default class VideoContainer extends Component {
       }
       this.video.removeEventListener('timeupdate', this.updateTime.bind(this))
     }
-    const noteConstant = `${video.toUpperCase()
-        .replace(/-/gi, '_')}_A_MEETING_NOTES`
+    const cleanedVideo = video.toUpperCase().replace(/-/gi, '_')
+    const noteConstant = `${cleanedVideo}_A_MEETING_NOTES`
     const notes = getMeetingNotes(noteConstant)
 
     this.setNotesAndVideo(notes, video)
   }
 
-  setNotesAndVideo(notes, video) {
-    this.setState({notes}, () => {
-      const video = document.getElementById('video')
-
-      this.setState({ video }, () => {
-
-        this.video.addEventListener('timeupdate', this.updateTime.bind(this))
-        this.video.addEventListener('ended', this.resetState.bind(this))
-        video.playbackRate = 0.75;
-        this.video.play()
-      })
+  setNotesAndVideo(notes) {
+    this.setState({ notes }, () => {
+      this.video.addEventListener('timeupdate', this.updateTime.bind(this))
+      this.video.addEventListener('ended', this.resetState.bind(this))
+      this.video.playbackRate = 0.75;
+      this.video.play()
     })
   }
 
