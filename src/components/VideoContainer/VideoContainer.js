@@ -16,7 +16,7 @@ export default class VideoContainer extends Component {
   }
 
   componentDidMount() {
-    this.resetState()
+    this.setUpNotes()
   }
 
   componentWillUnmount() {
@@ -30,41 +30,48 @@ export default class VideoContainer extends Component {
   }
 
   resetStateOnPropsChange(video) {
-    if (this.video) {
-      if (!this.video.pause) {
-        this.video.pause()
-      }
-      this.video.removeEventListener('timeupdate', this.updateTime.bind(this))
-    }
-    const cleanedVideo = video.toUpperCase().replace(/-/gi, '_')
-    const noteConstant = `${cleanedVideo}_A_MEETING_NOTES`
-    const notes = getMeetingNotes(noteConstant)
+    this.video.removeEventListener('timeupdate', this.updateTime.bind(this))
 
-    this.setNotesAndVideo(notes, video)
+    this.setUpNotes(video)
   }
 
-  setNotesAndVideo(notes) {
+  setUpNotes(video) {
+    let cleanedVideo
+    if (video) {
+      cleanedVideo = video.toUpperCase().replace(/-/gi, '_')
+    } else {
+      cleanedVideo = this.props.video.toUpperCase().replace(/-/gi, '_')
+    }
+    const noteConstant = `${cleanedVideo}_A_MEETING_NOTES`
+
+    const notes = getMeetingNotes(noteConstant)
+    this.setNotes(notes)
+  }
+
+  setNotes(notes) {
     this.setState({ notes }, () => {
       this.video.addEventListener('timeupdate', this.updateTime.bind(this))
       this.video.addEventListener('ended', this.resetState.bind(this))
       this.video.playbackRate = 0.75;
-      this.video.play()
+
+      this.playVideo()
     })
   }
 
-  resetState() {
-    if (this.video) {
-      if (!this.video.paused) {
-        this.video.pause()
-      }
-      this.video.removeEventListener('timeupdate', this.handleTimeChange.bind(this))
+  playVideo() {
+    if (!this.video.paused) {
+      this.video.pause()
     }
-    const { video } = this.props
-    const noteConstant = `${video.toUpperCase()
-        .replace(/-/gi, '_')}_A_MEETING_NOTES`
-    const notes = getMeetingNotes(noteConstant)
+    this.video.play()
+  }
 
-    this.setNotesAndVideo(notes, video)
+  resetState() {
+    if (!this.video.paused) {
+      this.video.pause()
+    }
+    this.video.removeEventListener('timeupdate', this.handleTimeChange.bind(this))
+
+    this.setUpNotes()
   }
 
   handleTimeChange() {
@@ -93,9 +100,7 @@ export default class VideoContainer extends Component {
           ...this.state,
           notes: newNotes
         }, () => {
-          if (this.video.paused) {
-            this.video.play()
-          }
+          this.playVideo()
         })
       }
     }
@@ -108,9 +113,7 @@ export default class VideoContainer extends Component {
     this.setState({
       ...this.state,
       notes: notes.map(note => ({...note, selected: false}))
-    }, () => {
-      this.video.currentTime = note.startPoint
-    })
+    }, () => this.video.currentTime = note.startPoint)
   }
 
   render() {
@@ -121,10 +124,7 @@ export default class VideoContainer extends Component {
 
     return (
       <div className='content-container'>
-        <div
-          className='video-container'
-          id='start-video-container'
-        >
+        <div className='video-container' id='start-video-container'>
           <NoteContainer notes={this.state.notes} onClick={e => this.jumpToLocation(e)}/>
           <video
             id='video'
