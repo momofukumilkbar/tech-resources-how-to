@@ -47,7 +47,7 @@ class App extends Component {
             </h2>
           </div>
         </header>
-        <VideoContainer />
+        <VideoContainer video={this.state.selected}/>
         </div>
     )
   }
