@@ -1,0 +1,23 @@
+.video {
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+}
+
+.content-container {
+  border-width: 1px;
+  border-color: gray;
+  border-style: solid;
+  margin-top: -5px;
+  background-color: white;
+  z-index: 2;
+  margin: auto;
+  max-width: 1204px;
+}
+
+.video-container {
+  display: grid;
+  grid-template-rows: auto repeat(2, 290px);
+  grid-template-columns: 250px repeat(2, 476px) auto;
+}

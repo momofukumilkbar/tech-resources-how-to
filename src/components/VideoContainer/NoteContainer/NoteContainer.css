@@ -1,0 +1,10 @@
+.note-container {
+  background-color: white;
+  border-right-style: solid;
+  border-right-color: gray;
+  border-right-width: 1px;
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+}

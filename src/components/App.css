@@ -1,0 +1,40 @@
+.App-header {
+  max-width: 1204px;
+  margin: auto;  
+  padding: 20px 20px 0 20px;
+}
+
+.tab {
+  display: inline-block;
+  border-width: 1px 1px 0 1px;
+  padding: 10px;
+  margin: 0;
+  background-color: white;
+}
+
+.tab:nth-child(2) {
+  margin: 0 0px -1px 0px;
+}
+
+.tab:hover {
+  cursor: pointer;
+  background-color: rgb(255, 99, 71);
+  color: white;
+}
+
+.unselected {
+  border-style: none;
+  margin-top: -1px;
+}
+
+.selected {
+  border-color: gray;
+  border-style: solid;
+  margin-bottom: 0px;
+}
+
+.tab-container {
+  max-width: 1204px;
+  margin: auto;
+  padding-left: 0;
+}
