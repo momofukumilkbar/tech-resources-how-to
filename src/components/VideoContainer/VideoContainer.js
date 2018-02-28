@@ -12,7 +12,6 @@ export default class VideoContainer extends Component {
     super(props)
     this.state = {
       notes: [],
-      video: null
     }
   }
 
@@ -21,7 +20,7 @@ export default class VideoContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.state.video.removeEventListener('timeupdate', this.updateTime.bind(this))
+    this.video.removeEventListener('timeupdate', this.updateTime.bind(this))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,9 +30,11 @@ export default class VideoContainer extends Component {
   }
 
   resetStateOnPropsChange(video) {
-    if (this.state.video) {
-      this.state.video.pause()
-      this.state.video.removeEventListener('timeupdate', this.updateTime.bind(this))
+    if (this.video) {
+      if (!this.video.pause) {
+        this.video.pause()
+      }
+      this.video.removeEventListener('timeupdate', this.updateTime.bind(this))
     }
     const noteConstant = `${video.toUpperCase()
         .replace(/-/gi, '_')}_A_MEETING_NOTES`
@@ -48,20 +49,20 @@ export default class VideoContainer extends Component {
 
       this.setState({ video }, () => {
 
-        this.state.video.addEventListener('timeupdate', this.updateTime.bind(this))
-        this.state.video.addEventListener('ended', this.resetState.bind(this))
-        video.playbackRate = 0.5;
-        this.state.video.play()
+        this.video.addEventListener('timeupdate', this.updateTime.bind(this))
+        this.video.addEventListener('ended', this.resetState.bind(this))
+        video.playbackRate = 0.75;
+        this.video.play()
       })
     })
   }
 
   resetState() {
-    if (this.state.video) {
-      if (!this.state.video.paused) {
-        this.state.video.pause()
+    if (this.video) {
+      if (!this.video.paused) {
+        this.video.pause()
       }
-      this.state.video.removeEventListener('timeupdate', this.updateTime.bind(this))
+      this.video.removeEventListener('timeupdate', this.handleTimeChange.bind(this))
     }
     const { video } = this.props
     const noteConstant = `${video.toUpperCase()
@@ -71,18 +72,19 @@ export default class VideoContainer extends Component {
     this.setNotesAndVideo(notes, video)
   }
 
+  handleTimeChange() {
+    this.updateTime()
+  }
+
   updateTime() {
-    const { video, notes } = this.state
-    const { currentTime, paused } = video
-    console.log(currentTime)
+    const { notes } = this.state
+    const { currentTime, paused } = this.video
+
     if (!paused) {
       const newNotes = notes.map((note, index) => {
         if (currentTime >= note.startPoint && !note.selected) {
-          video.pause()
-          return {
-            ...note,
-            selected: true
-          }
+          this.video.pause()
+          return { ...note, selected: true }
         } else {
           return note
         }
@@ -93,14 +95,27 @@ export default class VideoContainer extends Component {
 
       if (stateSelected !== newSelected) {
         this.setState({
+          ...this.state,
           notes: newNotes
         }, () => {
-          if (this.state.video.paused) {
-            this.state.video.play()
+          if (this.video.paused) {
+            this.video.play()
           }
         })
       }
     }
+  }
+
+  jumpToLocation(e) {
+    const { notes } = this.state
+    const { id:message } = e.target
+    const note = notes.find(note => note.message === message)
+    this.setState({
+      ...this.state,
+      notes: notes.map(note => ({...note, selected: false}))
+    }, () => {
+      this.video.currentTime = note.startPoint
+    })
   }
 
   render() {
@@ -115,12 +130,13 @@ export default class VideoContainer extends Component {
           className='video-container'
           id='start-video-container'
         >
-          <NoteContainer notes={this.state.notes}/>
+          <NoteContainer notes={this.state.notes} onClick={e => this.jumpToLocation(e)}/>
           <video
             id='video'
             src={videos[this.props.video]}
             className='video'
             preload='auto'
+            ref={video => this.video = video}
           />
         </div>
       </div>

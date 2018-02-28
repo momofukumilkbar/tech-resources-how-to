@@ -2,10 +2,15 @@ import React from 'react'
 import './NoteContainer.css'
 import Note from './Note/Note'
 
-const NoteContainer = ({ notes }) =>
+const NoteContainer = ({ notes, onClick }) =>
   <div className='note-container'>
     {notes.map((note, index) =>
-      <Note message={note.message} selected={note.selected} key={index} />
+      <Note
+        message={note.message}
+        selected={note.selected}
+        key={index}
+        onClick={onClick}
+      />
     )}
   </div>
 
