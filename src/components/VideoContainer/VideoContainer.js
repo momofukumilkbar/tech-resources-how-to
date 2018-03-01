@@ -148,6 +148,9 @@ export default class VideoContainer extends Component {
             ref={video => this.video = video}
             muted
           />
+          <div className='link-to-google'>
+            For more information and troubleshooting, please visit <a href='https://gsuite.google.com/learning-center/products/meet/get-started/#section-4'>Google's Hangouts Page</a>
+          </div>
         </div>
       </div>
     )
