@@ -141,6 +141,7 @@ export default class VideoContainer extends Component {
         <div className='video-container' id='start-video-container'>
           <NoteContainer notes={this.state.notes} onClick={e => this.jumpToLocation(e)}/>
           <video
+            playsinline
             id='video'
             src={videos[this.props.video]}
             className='video'
