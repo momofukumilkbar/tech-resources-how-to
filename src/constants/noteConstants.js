@@ -80,10 +80,15 @@ export const HOW_TO_CREATE_A_RESOURCE_NOTES = [
     selected: null
   },
   {
-    message: 'All set!',
-    startPoint: 150,
+    message: 'Your resource is now available!',
+    startPoint: 151,
     selected: null
-  }
+  },
+  {
+    message: 'All set!',
+    startPoint: 177,
+    selected: null
+  },
 
 
 ]
