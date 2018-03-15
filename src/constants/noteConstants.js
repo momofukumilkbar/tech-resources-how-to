@@ -1,106 +1,97 @@
-export const HOW_TO_START_A_MEETING_NOTES = [
+export const HOW_TO_CREATE_A_RESOURCE_NOTES = [
   {
-    message: 'select your date',
+    message: 'Login to the Tech Portal at https://tech-management.herokuapp.com',
     startPoint: 1,
     selected: null
   },
   {
-    message: 'select "conference room" from the drop down',
-    startPoint: 2,
+    message: 'Select "resource center" from the top navigation bar',
+    startPoint: 3   ,
     selected: null
   },
   {
-    message: 'edit the meeting',
-    startPoint: 8,
+    message: 'Add a title, your draft will begin to populate with your inputs',
+    startPoint: 10,
     selected: null
   },
   {
-    message: 'add conferencing',
-    startPoint: 12,
+    message: 'Add a category',
+    startPoint: 19,
     selected: null
   },
   {
-    message: 'save the meeting',
-    startPoint: 16,
+    message: 'Add a helpful description',
+    startPoint: 29,
+    selected: null
+  },
+  {
+    message: 'Add the first step',
+    startPoint: 45,
+    selected: null
+  },
+  {
+    message: 'The step links to an external site',
+    startPoint: 50,
+    selected: null
+  },
+  {
+    message: 'The link must be in the format shown: "[display text]: hyperlink text"',
+    startPoint: 53,
+    selected: null
+  },
+  {
+    message: 'Submit the link using "ctrl + enter"',
+    startPoint: 65,
+    selected: null
+  },
+  {
+    message: 'Reference the link using the following format: "[link [link number]]"',
+    startPoint: 70,
+    selected: null
+  },
+  {
+    message: 'Link numbers are assigned in the order of submission',
+    startPoint: 75,
+    selected: null
+  },
+  {
+    message: 'Submit the rest of the steps',
+    startPoint: 80,
+    selected: null
+  },
+  {
+    message: 'Search Tags are required before submitting the finalized resource',
+    startPoint: 120,
+    selected: null
+  },
+  {
+    message: 'Enter your comma separated tags, they will populate in your draft as you type',
+    startPoint: 125,
+    selected: null
+  },
+  {
+    message: 'Enter your comma separated tags, they will populate in your draft as you type',
+    startPoint: 125,
+    selected: null
+  },
+  {
+    message: 'Apply the "ops/tech only" flag if these steps should be handled internally by ops\nThis resource will not be accessible to users in other departments',
+    startPoint: 139,
     selected: null
   },
   {
     message: 'All set!',
-    startPoint: 17,
+    startPoint: 150,
     selected: null
   }
-]
 
-export const HOW_TO_JOIN_A_MEETING_NOTES = [
-  {
-    message: 'click on a meeting',
-    startPoint: 1.3,
-    selected: null
-  },
-  {
-    message: 'click on hangouts meet link',
-    startPoint: 4.2,
-    selected: null
-  },
-  {
-    message: 'click join meeting',
-    startPoint: 9,
-    selected: null
-  },
-  {
-    message: 'all set!',
-    startPoint: 12,
-    selected: null
-  }
-]
 
-export const HOW_TO_CALL_IN_TO_A_MEETING_NOTES = [
-  {
-    message: 'click on a meeting',
-    startPoint: 0,
-    selected: null
-  },
-  {
-    message: 'dial in using the phone number and pin on the metting info popup',
-    startPoint: 3,
-    selected: null
-  }
-]
-
-export const HOW_TO_START_IN_CONFERENCE_ROOM_A_MEETING_NOTES = [
-  {
-    message: 'check that TV is on google hangouts meet',
-    startPoint: 0,
-    selected: null
-  },
-  {
-    message: 'note: if you are not on google hangouts meet, you will need to change the HDMI input',
-    startPoint: 0.5,
-    selected: null
-  },
-  {
-    message: 'all scheduled meetings are on the tablet, choose your meeting form the list',
-    startPoint: 3,
-    selected: null
-  },
-  {
-    message: 'all set',
-    startPoint: 6,
-    selected: null
-  }
 ]
 
 export const getMeetingNotes = note => {
-  debugger
   switch(note) {
-    case 'HOW_TO_START_A_MEETING_NOTES':
-      return HOW_TO_START_A_MEETING_NOTES
-    case 'HOW_TO_JOIN_A_MEETING_NOTES':
-      return HOW_TO_JOIN_A_MEETING_NOTES
-    case 'HOW_TO_CALL_IN_TO_A_MEETING_NOTES':
-      return HOW_TO_CALL_IN_TO_A_MEETING_NOTES
-    case 'HOW_TO_START_IN_CONFERENCE_ROOM_A_MEETING_NOTES':
-      return HOW_TO_START_IN_CONFERENCE_ROOM_A_MEETING_NOTES
+    case 'HOW_TO_CREATE_A_RESOURCE_NOTES':
+      return HOW_TO_CREATE_A_RESOURCE_NOTES
     default:
       return null
   }

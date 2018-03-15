@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
-import HowToStartVideo from '../../assets/how-to-start.mov'
-import HowToJoinVideo from '../../assets/how-to-join.mov'
-import HowToCallInVideo from '../../assets/how-to-call-in.mov'
-import HowToStartAMeetingVideo from '../../assets/how-to-start-a-meeting.mov'
+import HowToCreateVideo from '../../assets/out-1.ogv'
 import './VideoContainer.css'
 import NoteContainer from './NoteContainer/NoteContainer'
 import { getMeetingNotes } from '../../constants/noteConstants'
-import {
-  HOW_TO_START_A_MEETING,
-  HOW_TO_JOIN_A_MEETING,
-  HOW_TO_CALL_IN_TO_A_MEETING,
-  HOW_TO_START_IN_CONFERENCE_ROOM
-} from '../../constants/videoConstants'
+import { HOW_TO_CREATE_A_RESOURCE } from '../../constants/videoConstants'
 
 export default class VideoContainer extends Component {
   constructor(props) {
@@ -23,6 +15,20 @@ export default class VideoContainer extends Component {
 
   componentDidMount() {
     this.setUpNotes()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { notes:currNotes } = this.state
+    const { notes:prevNotes } = prevState
+
+    if (prevNotes !== currNotes) {
+      const selected = currNotes.filter(item => !!item.selected)
+      const lastSelected = selected[selected.length - 1] || {}
+
+      console.log(lastSelected.message)
+      const node = document.getElementById(lastSelected.message)
+      if (node) { node.scrollIntoView() }
+    }
   }
 
   componentWillUnmount() {
@@ -47,7 +53,7 @@ export default class VideoContainer extends Component {
     } else {
       cleanedVideo = this.props.video.toUpperCase().replace(/-/gi, '_')
     }
-    const noteConstant = `${cleanedVideo}_A_MEETING_NOTES`
+    const noteConstant = `${cleanedVideo}_NOTES`
     const notes = getMeetingNotes(noteConstant)
     this.setNotes(notes)
   }
@@ -56,7 +62,6 @@ export default class VideoContainer extends Component {
     this.setState({ notes }, () => {
       this.video.addEventListener('timeupdate', this.updateTime.bind(this))
       this.video.addEventListener('ended', this.resetState.bind(this))
-      this.video.playbackRate = 0.75;
 
       this.playVideo()
     })
@@ -130,10 +135,7 @@ export default class VideoContainer extends Component {
 
   render() {
     const videos = {
-      [HOW_TO_START_A_MEETING]: HowToStartVideo,
-      [HOW_TO_JOIN_A_MEETING]: HowToJoinVideo,
-      [HOW_TO_CALL_IN_TO_A_MEETING]: HowToCallInVideo,
-      [HOW_TO_START_IN_CONFERENCE_ROOM]: HowToStartAMeetingVideo
+      [HOW_TO_CREATE_A_RESOURCE]: HowToCreateVideo,
     }
 
     return (
@@ -149,9 +151,6 @@ export default class VideoContainer extends Component {
             ref={video => this.video = video}
             muted
           />
-          <div className='link-to-google'>
-            For more information and troubleshooting, please visit <a href='https://gsuite.google.com/learning-center/products/meet/get-started/#section-4'>Google's Hangouts Page</a>
-          </div>
         </div>
       </div>
     )
